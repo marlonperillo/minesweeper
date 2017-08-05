@@ -1,0 +1,42 @@
+
+
+tbody{
+	table-layout: fixed;
+}
+
+
+
+.field td{
+	border:1px red solid;
+	
+	width: 20px;
+	height: 20px;
+
+
+	/*test*/
+	color: gray;
+	font-family: sans-serif;
+	font-size: 1em;
+	/*test*/
+}
+
+.field tr{
+	background-color: gray;
+}
+
+
+.field tr:nth-child(even) td:nth-child(odd){
+  background-color: #EEEEEE;
+}
+
+.field tr:nth-child(even) td:nth-child(even){
+  background-color: #111111;
+}
+
+.field tr:nth-child(odd) td:nth-child(even){
+  background-color: #EEEEEE;
+}
+
+.field tr:nth-child(odd) td:nth-child(odd){
+  background-color: #111111;
+}
