@@ -1,15 +1,4 @@
 
-
-height = 10
-width = 3
-percent = 0.23
-
-var minefieldObject = document.getElementById("minefield")
-initializeTableMineField(height, width, minefieldObject)
-mines = generateMines(height, width, percent)
-
-
-
 function generateMines(height, width, percent){
 
 	var list = new Array()
@@ -25,24 +14,64 @@ function generateMines(height, width, percent){
 		}
 	}
 	return list
-
 }
 
-function initializeTableMineField(height, width, tableObject){
+function getCount(r, c, minesList){
 
-	for( i = 0; i < height; i++){
-		newrow = tableObject.insertRow(i)
-		for( j = 0; j< width; j++){
-			cell = newrow.insertCell(j)
-			cell.onclick = function(var1,var2) {
-				return function(){
-					stepOn(var1, var2)
-				}
-			}(i, j);
-		}
-	}
+	var sum = 0;
+	var x, y;
+
+	//1
+	y = r + 1;
+	x = c - 1;
+	if(isMine(y,x,minesList))
+		sum ++;
+
+	//2
+	y = r;
+	x = c - 1;
+	if(isMine(y,x,minesList))
+		sum ++;
+
+	//3
+	y = r - 1;
+	x = c - 1;
+	if(isMine(y,x,minesList))
+		sum ++;
+
+	//4
+	y = r + 1;
+	x = c;
+	if(isMine(y,x,minesList))
+		sum ++;
+
+	//5
+	y = r + 1;
+	x = c + 1;
+	if(isMine(y,x,minesList))
+		sum ++;
+
+	//6
+	y = r;
+	x = c + 1;
+	if(isMine(y,x,minesList))
+		sum ++;
+	
+	//7
+	y = r - 1;
+	x = c + 1;
+	if(isMine(y,x,minesList))
+		sum ++;
+
+	//8
+	y = r - 1;
+	x = c;
+	if(isMine(y,x,minesList))
+		sum ++;
+
+	return sum;
 }
 
-function stepOn(r, c){
-	console.log(r, c);
+function isMine(r,c,minesList){
+	return minesList.indexOf(r + ',' +c) != -1
 }

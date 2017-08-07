@@ -6,17 +6,20 @@ table{
 	border: 2px black solid;
 }
 
-
-
 .field td{
 	width: 50;
 	height: 50;
 	margin: 50;
 	padding:10px;
+	text-align: center;
+	font-size: 20px;
+	font-family: sans-serif;
+	color: white;
+	border: 1px black solid;
 }
 
 .field tr:nth-child(even) td:nth-child(odd){
-  background-color: #DDDDDD;
+  background-color: #ABABAB;
 }
 
 .field tr:nth-child(even) td:nth-child(even){
@@ -24,14 +27,14 @@ table{
 }
 
 .field tr:nth-child(odd) td:nth-child(even){
-  background-color: #DDDDDD;
+  background-color: #ABABAB;
 }
 
 .field tr:nth-child(odd) td:nth-child(odd){
   background-color: #222222;
 }
 #minefield td:hover {
-   background-color: #0000ff;
+   border: 1px blue solid;
 }
 
 
