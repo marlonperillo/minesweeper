@@ -6,10 +6,11 @@ var percent = 0.10
 var clicksToGo
 var mines = new Array()
 
-var minefieldTable = document.getElementById("minefield")
 
+var minefieldTable = document.getElementById("minefield")
 newGame(height, width, percent, minefieldTable, "welcome")
 
+//sets all td of a table into a button
 function initializeButtons(height, width, tableObject){
 	for( i = 0; i < height; i++){
 		newrow = tableObject.insertRow(i)
@@ -24,17 +25,20 @@ function initializeButtons(height, width, tableObject){
 	}
 }
 
+//remove onClick function of td
 function removeOnClick(cell){
 	cell.onclick = null;
 }
 
-
+//remove all rows of a table
 function clearTable(tableObject){
-	while(tableObject.rows.length > 0) {
- 			tableObject.deleteRow(0);
-	}
+	while(tableObject.rows.length > 0)
+ 			tableObject.deleteRow(0)
+	
 }
 
+//function to be placed on a button
+//mainly the game logic right here
 function stepOn(r, c, cell){
 	if(isMine(r,c,mines)){
 		newGame(height, width, percent, minefieldTable, "game over")
@@ -46,14 +50,15 @@ function stepOn(r, c, cell){
 			newGame(height, width, percent, minefieldTable, "you won")
 		}
 	}
-
 }
 
+//new game
+//height width percent tableobject and message are passed as parameters
 function newGame(height, width, percent, minefieldTable, message){
-	mines = generateMines(height, width, percent)
-
 	alert(message)
+	mines = generateMines(height, width, percent)
 	clicksToGo = height * width - mines.length
 	clearTable(minefieldTable)
 	initializeButtons(height, width, minefieldTable)	
 }
+//mines and clicksToGo are global consider how to make them parameters as well

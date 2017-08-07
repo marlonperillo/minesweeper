@@ -1,4 +1,6 @@
 
+//returns an array of strings representing mines in the 
+//format of 'y,x' coordinates
 function generateMines(height, width, percent){
 
 	var list = new Array()
@@ -16,6 +18,10 @@ function generateMines(height, width, percent){
 	return list
 }
 
+//given coordinates r, c (row and column number)
+//returns the number of mines surrounding y and x
+//based on a list of strings representing mines in the 
+//format of 'y,x' coordinates
 function getCount(r, c, minesList){
 
 	var sum = 0;
@@ -72,6 +78,10 @@ function getCount(r, c, minesList){
 	return sum;
 }
 
+//returns true or false wether a
+//coordinate r, c (row and column)
+//is a mine based on a list of strings
+//representing mines in the format of 'y,x'
 function isMine(r,c,minesList){
 	return minesList.indexOf(r + ',' +c) != -1
 }
