@@ -1,8 +1,8 @@
 
 
-var height = 5
-var width = 3
-var percent = 0.10
+var height = 7
+var width = 6
+var percent = 0.16
 var clicksToGo
 var mines = new Array()
 
