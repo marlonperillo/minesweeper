@@ -45,11 +45,6 @@ function cellClick(r, c, cell){
 	}
 }
 
-function refresh(cell){
-	content = cell.innerHTML
-	cell.innerHTML = content
-}
-
 //step on a cell in the field of mines
 function stepOn(r,c,cell){
 	if(isMine(r,c,mines)){
@@ -61,7 +56,6 @@ function stepOn(r,c,cell){
 			cell.innerHTML = count
 		cell.style.backgroundColor = "#222222"
 		cell.style.borderColor = "black"
-		refresh(cell)
 		removeOnClick(cell)
 		if(count == 0)
 			stepSurrounding(r,c)
