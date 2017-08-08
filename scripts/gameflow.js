@@ -3,8 +3,6 @@ var height = 7
 var width = 6
 var percent = 0.16
 var clicksToGo
-var mines = new Array()
-
 var minefieldTable = document.getElementById("minefield")
 newGame(height, width, percent, minefieldTable, "welcome")
 
@@ -17,6 +15,7 @@ function initializeButtons(height, width, tableObject){
 			cell.onclick = function(var1,var2,var3) {
 				return function(){
 					cellClick(var1, var2,var3)
+					checkGameStatus()
 				}
 			}(i, j,cell);
 		}
@@ -35,31 +34,34 @@ function clearTable(tableObject){
 	
 }
 
-//function to be placed on a button
-//mainly the game logic right here
-function cellClick(r, c, cell){
-	stepOn(r,c,cell)
+//check if player has won
+function checkGameStatus(){
 	if( clicksToGo == 0 ){
-		clicksToGo = -1
 		newGame(height, width, percent, minefieldTable, "you won")
 	}
+
 }
+
+//function to be placed on a button
+//step on a cell and assess if game over
+function cellClick(r, c, cell){
+	stepOn(r,c,cell)
+}
+
 
 //step on a cell in the field of mines
 function stepOn(r,c,cell){
 	if(isMine(r,c,mines)){
 		newGame(height, width, percent, minefieldTable, "game over")
 	}else{
-		
+		removeOnClick(cell)	
 		count = getCount(r, c, mines)
 		if(count != 0)
 			cell.innerHTML = count
 		cell.style.backgroundColor = "#222222"
 		cell.style.borderColor = "black"
-		removeOnClick(cell)
 		if(count == 0)
 			stepSurrounding(r,c)
-
 		clicksToGo --
 	}
 }
@@ -71,9 +73,10 @@ function newGame(height, width, percent, minefieldTable, message){
 	mines = generateMines(height, width, percent)
 	clicksToGo = height * width - mines.length
 	clearTable(minefieldTable)
-	initializeButtons(height, width, minefieldTable)	
+	initializeButtons(height, width, minefieldTable)
 }
 
+//step on surrounding cells
 function stepSurrounding(r,c){
 	var x, y;
 
@@ -145,6 +148,7 @@ function stepSurrounding(r,c){
 			stepOn(y,x,tdObject)
 }
 
+//get td tag
 function getTd(y,x){
     d = minefieldTable .getElementsByTagName("tr")[y]
 	if(d == null)
