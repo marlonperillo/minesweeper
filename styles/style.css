@@ -16,23 +16,9 @@ table{
 	font-family: sans-serif;
 	color: white;
 	border: 1px black solid;
+	background-color: #ABABAB;
 }
 
-.field tr:nth-child(even) td:nth-child(odd){
-  background-color: #ABABAB;
-}
-
-.field tr:nth-child(even) td:nth-child(even){
-  background-color: #222222;
-}
-
-.field tr:nth-child(odd) td:nth-child(even){
-  background-color: #ABABAB;
-}
-
-.field tr:nth-child(odd) td:nth-child(odd){
-  background-color: #222222;
-}
 #minefield td:hover {
    border: 1px blue solid;
 }

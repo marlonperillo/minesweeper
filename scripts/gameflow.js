@@ -1,11 +1,9 @@
 
-
 var height = 7
 var width = 6
 var percent = 0.16
 var clicksToGo
 var mines = new Array()
-
 
 var minefieldTable = document.getElementById("minefield")
 newGame(height, width, percent, minefieldTable, "welcome")
@@ -18,7 +16,7 @@ function initializeButtons(height, width, tableObject){
 			cell = newrow.insertCell(j)
 			cell.onclick = function(var1,var2,var3) {
 				return function(){
-					stepOn(var1, var2,var3)
+					cellClick(var1, var2,var3)
 				}
 			}(i, j,cell);
 		}
@@ -39,16 +37,36 @@ function clearTable(tableObject){
 
 //function to be placed on a button
 //mainly the game logic right here
-function stepOn(r, c, cell){
+function cellClick(r, c, cell){
+	stepOn(r,c,cell)
+	if( clicksToGo == 0 ){
+		clicksToGo = -1
+		newGame(height, width, percent, minefieldTable, "you won")
+	}
+}
+
+function refresh(cell){
+	content = cell.innerHTML
+	cell.innerHTML = content
+}
+
+//step on a cell in the field of mines
+function stepOn(r,c,cell){
 	if(isMine(r,c,mines)){
 		newGame(height, width, percent, minefieldTable, "game over")
 	}else{
-		cell.innerHTML = getCount(r, c, mines)
+		
+		count = getCount(r, c, mines)
+		if(count != 0)
+			cell.innerHTML = count
+		cell.style.backgroundColor = "#222222"
+		cell.style.borderColor = "black"
+		refresh(cell)
 		removeOnClick(cell)
-		clicksToGo--
-		if(clicksToGo === 0){
-			newGame(height, width, percent, minefieldTable, "you won")
-		}
+		if(count == 0)
+			stepSurrounding(r,c)
+
+		clicksToGo --
 	}
 }
 
@@ -61,4 +79,82 @@ function newGame(height, width, percent, minefieldTable, message){
 	clearTable(minefieldTable)
 	initializeButtons(height, width, minefieldTable)	
 }
-//mines and clicksToGo are global consider how to make them parameters as well
+
+function stepSurrounding(r,c){
+	var x, y;
+
+	//1
+	y = r + 1;
+	x = c - 1;
+	tdObject = getTd(y,x)
+	if(  tdObject != null)
+		if(tdObject.onclick != null)
+			stepOn(y,x,tdObject)
+
+	//2
+	y = r;
+	x = c - 1;
+	tdObject = getTd(y,x)
+	if(  tdObject != null)
+		if(tdObject.onclick != null)
+			stepOn(y,x,tdObject)
+	//3
+	y = r - 1;
+	x = c - 1;
+
+	tdObject = getTd(y,x)
+	if(  tdObject != null)
+		if(tdObject.onclick != null)
+			stepOn(y,x,tdObject)
+
+	//4
+	y = r + 1;
+	x = c;
+	tdObject = getTd(y,x)
+	if(  tdObject != null)
+		if(tdObject.onclick != null)
+			stepOn(y,x,tdObject)
+	
+	//5
+	y = r + 1;
+	x = c + 1;
+	
+	tdObject = getTd(y,x)
+	if(  tdObject != null)
+		if(tdObject.onclick != null)
+			stepOn(y,x,tdObject)
+
+	//6
+	y = r;
+	x = c + 1;
+	
+	tdObject = getTd(y,x)
+	if(  tdObject != null)
+		if(tdObject.onclick != null)
+			stepOn(y,x,tdObject)
+
+	//7
+	y = r - 1;
+	x = c + 1;
+	
+	tdObject = getTd(y,x)
+	if(  tdObject != null)
+		if(tdObject.onclick != null)
+			stepOn(y,x,tdObject)
+
+	//8
+	y = r - 1;
+	x = c;
+	tdObject = getTd(y,x)
+	if(  tdObject != null)
+		if(tdObject.onclick != null)
+			stepOn(y,x,tdObject)
+}
+
+function getTd(y,x){
+    d = minefieldTable .getElementsByTagName("tr")[y]
+	if(d == null)
+		return null
+    r = d.getElementsByTagName("td")[x]
+	return r
+}
