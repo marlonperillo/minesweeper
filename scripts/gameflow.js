@@ -1,10 +1,14 @@
 
 var height = 7
-var width = 6
-var percent = 0.16
+var width = 8
+var percent = 0.15
 var clicksToGo
-var minefieldTable = document.getElementById("minefield")
-newGame(height, width, percent, minefieldTable)
+var minefieldTable
+newGame()
+var newGameButton = document.getElementById("newgameButton")
+newGameButton.onclick = function(){
+	newGame()
+}
 
 //sets all td of a table into a button
 function initializeButtons(height, width, tableObject){
@@ -22,13 +26,15 @@ function initializeButtons(height, width, tableObject){
 	}
 }
 
-function removeAllClicks(height, width, tableObject){
+function removeAllClicks(tableObject){
+	var height = tableObject.getElementsByTagName("tr").length
+	var width =  tableObject.getElementsByTagName("tr")[0].getElementsByTagName("td").length
+	var cell
 	for( i = 0; i < height; i++){
 		for( j = 0; j< width; j++){
-			cell = getTd(i,j)
-			if(cell ==null)
-				continue
-			removeOnClick(cell)
+			cell = getTd(i,j,tableObject)
+			if(cell != null)
+				removeOnClick(cell)
 		}
 	}
 }
@@ -53,8 +59,7 @@ function updateBanner(message){
 function checkGameStatus(){
 	if( clicksToGo == 0 ){
 		updateBanner("you won")
-		removeAllClicks(height,width,minefieldTable)
-		//newGame(height, width, percent, minefieldTable)
+		removeAllClicks(minefieldTable)
 	}
 
 }
@@ -71,8 +76,7 @@ function stepOn(r,c,cell){
 	if(isMine(r,c,mines)){
 		updateBanner("game over")
 		cell.style.backgroundColor="red"
-		removeAllClicks(height,width,minefieldTable)
-		//newGame(height, width, percent, minefieldTable)
+		removeAllClicks(minefieldTable)
 	}else{
 		removeOnClick(cell)	
 		count = getCount(r, c, mines)
@@ -81,97 +85,84 @@ function stepOn(r,c,cell){
 		cell.style.backgroundColor = "#222222"
 		cell.style.borderColor = "black"
 		if(count == 0)
-			stepSurrounding(r,c)
+			stepSurrounding(r,c, minefieldTable)
 		clicksToGo --
 	}
 }
 
+function newGame(){
+	minefieldTable = document.getElementById("minefield")
+	setupGame(height,width,percent,minefieldTable)
+}
+
 //new game
 //height width percent tableobject and message are passed as parameters
-function newGame(height, width, percent, minefieldTable){
+function setupGame(height, width, percent, minefieldTable){
 	mines = generateMines(height, width, percent)
 	clicksToGo = height * width - mines.length
 	clearTable(minefieldTable)
 	initializeButtons(height, width, minefieldTable)
+	updateBanner("WELCOME");
 }
 
-//step on surrounding cells
-function stepSurrounding(r,c){
-	var x, y;
-
-	//1
-	y = r + 1;
-	x = c - 1;
-	tdObject = getTd(y,x)
-	if(  tdObject != null)
-		if(tdObject.onclick != null)
-			stepOn(y,x,tdObject)
-
-	//2
-	y = r;
-	x = c - 1;
-	tdObject = getTd(y,x)
-	if(  tdObject != null)
-		if(tdObject.onclick != null)
-			stepOn(y,x,tdObject)
-	//3
-	y = r - 1;
-	x = c - 1;
-
-	tdObject = getTd(y,x)
-	if(  tdObject != null)
-		if(tdObject.onclick != null)
-			stepOn(y,x,tdObject)
-
-	//4
-	y = r + 1;
-	x = c;
-	tdObject = getTd(y,x)
-	if(  tdObject != null)
-		if(tdObject.onclick != null)
-			stepOn(y,x,tdObject)
-	
-	//5
-	y = r + 1;
-	x = c + 1;
-	
-	tdObject = getTd(y,x)
-	if(  tdObject != null)
-		if(tdObject.onclick != null)
-			stepOn(y,x,tdObject)
-
-	//6
-	y = r;
-	x = c + 1;
-	
-	tdObject = getTd(y,x)
-	if(  tdObject != null)
-		if(tdObject.onclick != null)
-			stepOn(y,x,tdObject)
-
-	//7
-	y = r - 1;
-	x = c + 1;
-	
-	tdObject = getTd(y,x)
-	if(  tdObject != null)
-		if(tdObject.onclick != null)
-			stepOn(y,x,tdObject)
-
-	//8
-	y = r - 1;
-	x = c;
-	tdObject = getTd(y,x)
+//step on x,y with extra precautions
+function attemptStep(y,x,graphObject){
+	var tdObject = getTd(y,x,graphObject)
 	if(  tdObject != null)
 		if(tdObject.onclick != null)
 			stepOn(y,x,tdObject)
 }
 
 //get td tag
-function getTd(y,x){
-    d = minefieldTable .getElementsByTagName("tr")[y]
-	if(d == null)
+function getTd(y,x,graphObject){
+    var row = graphObject.getElementsByTagName("tr")[y]
+	if(row == null)
 		return null
-    r = d.getElementsByTagName("td")[x]
-	return r
+    var cell = row.getElementsByTagName("td")[x]
+	return cell
+}
+
+//step on surrounding cells
+function stepSurrounding(r,c,graphObject){
+	var x, y;
+
+	//1
+	y = r + 1;
+	x = c - 1;
+	attemptStep(y,x,graphObject)
+
+	//2
+	y = r;
+	x = c - 1;
+	attemptStep(y,x,graphObject)
+	
+	//3
+	y = r - 1;
+	x = c - 1;
+	attemptStep(y,x,graphObject)
+
+	//4
+	y = r + 1;
+	x = c;
+	attemptStep(y,x,graphObject)
+	
+	//5
+	y = r + 1;
+	x = c + 1;
+	attemptStep(y,x,graphObject)
+
+	//6
+	y = r;
+	x = c + 1;
+	attemptStep(y,x,graphObject)
+
+	//7
+	y = r - 1;
+	x = c + 1;
+	attemptStep(y,x,graphObject)
+
+	//8
+	y = r - 1;
+	x = c;
+	attemptStep(y,x,graphObject)
 }

@@ -1,5 +1,4 @@
 
-
 #banner{
 	font-family: sans-serif;
 }
@@ -9,6 +8,13 @@ table{
 	border: 2px black solid;
 }
 
+#content{
+	display: inline-block;
+}
+
+#container{
+	margin:0 auto;
+}
 .field td{
 	width: 50;
 	height: 50;
@@ -20,6 +26,28 @@ table{
 	color: white;
 	border: 1px black solid;
 	background-color: #ABABAB;
+}
+
+#newgameButton {
+	font-family: sans-serif;
+	font-size: 1.3em;
+	padding: 8px;
+	padding-left: 17px;
+	padding-right: 17px;
+	background-color: #222222;
+	border: 1px solid black;
+	color: white;
+	margin-top: 20px;
+	float: right;
+}
+
+#newgameButton:active {
+	background-color: #ABABAB;
+	color: black;
+}
+
+#newgameButton:hover {
+	border: 1px blue solid;
 }
 
 #minefield td:hover {
