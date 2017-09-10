@@ -1,2 +1,2 @@
 # minesweeper
-javascript only minesweeper game web page
+javascript minesweeper game web page
